@@ -43,9 +43,7 @@ class PolyTreeNode
   end
 
   def dfs(target)
-    debugger
     return self if self.value == target
-    search_result = self
     self.children.each do |child|
       search_result = child.dfs(target)
       return search_result unless search_result.nil?
@@ -57,15 +55,16 @@ class PolyTreeNode
     "#<PolyTreeNode value:#{self.value}, children: #{self.children}"
   end
 
+  def bfs(target)
+    arr = [self]
+    until arr.empty?
+      el = arr.shift
+      return el if el.value == target
+      el.children.each do |child|
+        arr.push(child)
+      end
+    end
+    nil
+  end
+
 end
-
-
-nodes = ('a'..'g').map { |value| PolyTreeNode.new(value) }
-
-parent_index = 0
-nodes.each_with_index do |child, index|
-  next if index.zero?
-  child.parent = nodes[parent_index]
-  parent_index += 1 if index.even?
-end
-p nodes
